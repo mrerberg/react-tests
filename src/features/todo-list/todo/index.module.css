@@ -1,0 +1,23 @@
+.button {
+  font-family: monospace;
+  color: lightgray;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+}
+
+.text {
+  padding-left: 12px;
+}
+
+.completed {
+  text-decoration: line-through;
+}
+
+.loading {
+  opacity: 0.4;
+}
