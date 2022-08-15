@@ -20,13 +20,13 @@ export const Todo = ({ todo }) => {
       className={cx({
         [styles.loading]: isLoading,
       })}
+      data-testid={`todo-item-${id}`}
     >
       <button
         className={styles.button}
         onClick={toggleTodoItem}
       >
         {icon}
-
         <span
           className={cx(styles.text, {
             [styles.completed]: completed,

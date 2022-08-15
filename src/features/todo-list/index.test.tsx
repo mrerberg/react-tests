@@ -8,11 +8,9 @@ import { setupServer } from "msw/node";
 import { todoApi } from "../../services/todo";
 
 export const handlers = [
-   rest.get(`${BASE_API_URL}/todos`, (req, res, ctx) => {
-        return res(
-          ctx.json([{ completed: false, id: "1", title: "First todo" }])
-        );
-      }),
+  rest.get(`${BASE_API_URL}/todos`, (req, res, ctx) => {
+    return res(ctx.json([{ completed: false, id: "1", title: "First todo" }]));
+  }),
 ];
 
 const server = setupServer(...handlers);
@@ -64,9 +62,7 @@ describe("TodoList feature", () => {
       })
     );
 
-      render(<TodoList />, { wrapper: storeRef.wrapper });
-
-    fireEvent.click(await screen.findByText("First todo"));
+    render(<TodoList />, { wrapper: storeRef.wrapper });
 
     server.use(
       rest.get(`${BASE_API_URL}/todos`, (req, res, ctx) => {
@@ -76,7 +72,11 @@ describe("TodoList feature", () => {
       })
     );
 
-    expect(await screen.findByText("👌")).toBeInTheDocument();
+    fireEvent.click(await screen.findByText("First todo"));
+
+    const item = await screen.findByTestId("todo-item-1");
+
+    expect(item).toHaveTextContent("👌First todo");
   });
 
   it("should create todo item", async () => {
