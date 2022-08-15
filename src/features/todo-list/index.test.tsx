@@ -8,13 +8,11 @@ import { setupServer } from "msw/node";
 import { todoApi } from "../../services/todo";
 
 export const handlers = [
-  rest.get(`${BASE_API_URL}/todos`, (req, res, ctx) => {
-    return res(ctx.json([{ completed: false, id: "1", title: "First todo" }]));
-  }),
-
-  rest.put(`${BASE_API_URL}/todos/1`, (req, res, ctx) => {
-    return res(ctx.json({ completed: true }));
-  }),
+   rest.get(`${BASE_API_URL}/todos`, (req, res, ctx) => {
+        return res(
+          ctx.json([{ completed: false, id: "1", title: "First todo" }])
+        );
+      }),
 ];
 
 const server = setupServer(...handlers);
@@ -28,7 +26,15 @@ describe("TodoList feature", () => {
 
   afterAll(() => server.close());
 
-  it("should show requested data", async () => {
+  it("should show todos list", async () => {
+    server.use(
+      rest.get(`${BASE_API_URL}/todos`, (req, res, ctx) => {
+        return res(
+          ctx.json([{ completed: false, id: "1", title: "First todo" }])
+        );
+      })
+    );
+
     render(<TodoList />, { wrapper: storeRef.wrapper });
 
     screen.getByText("Loading...");
@@ -52,7 +58,13 @@ describe("TodoList feature", () => {
   });
 
   it("should update todo item by click", async () => {
-    render(<TodoList />, { wrapper: storeRef.wrapper });
+    server.use(
+      rest.put(`${BASE_API_URL}/todos/1`, (req, res, ctx) => {
+        return res(ctx.json({ completed: true }));
+      })
+    );
+
+      render(<TodoList />, { wrapper: storeRef.wrapper });
 
     fireEvent.click(await screen.findByText("First todo"));
 
