@@ -39,5 +39,15 @@ describe("<Button />", () => {
 
        expect(cb).toBeCalledTimes(1);
      });
+
+      it("should call `onClick` prop with arguments", () => {
+        const cb = jest.fn();
+
+        render(<Button onClick={cb} dataTestId={dataTestId} />);
+
+        fireEvent.click(screen.getByTestId(dataTestId));
+
+        expect(cb).toBeCalledWith({ name: "Mikka" });
+      });
   });
 });
